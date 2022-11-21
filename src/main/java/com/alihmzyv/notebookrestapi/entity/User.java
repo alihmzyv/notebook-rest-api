@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.List;
@@ -37,6 +38,7 @@ public class User {
 
     @Column(name = "password")
     @NotBlank(message = "Password is a required field.")
+    @Min(value = 6, message = "Password should contain at least 6 characters.")
     private String password;
 
     @OneToMany(mappedBy = "user",
