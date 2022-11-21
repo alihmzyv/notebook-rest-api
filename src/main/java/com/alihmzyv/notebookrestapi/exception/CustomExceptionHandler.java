@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
@@ -20,7 +21,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<String> messages = ex.getFieldErrors().stream()
                         .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                        .toList();
+                        .collect(Collectors.toList());
         return ResponseEntity
                 .badRequest()
                 .body(new CustomErrorResponse(HttpStatus.BAD_REQUEST.value(), messages));
