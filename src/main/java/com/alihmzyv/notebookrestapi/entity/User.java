@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -38,7 +39,7 @@ public class User {
 
     @Column(name = "password")
     @NotBlank(message = "Password is a required field.")
-    @Min(value = 6, message = "Password should contain at least 6 characters.")
+    @Size(min = 6, message = "Password should contain at least 6 characters")
     private String password;
 
     @OneToMany(mappedBy = "user",
