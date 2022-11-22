@@ -1,5 +1,6 @@
 package com.alihmzyv.notebookrestapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -9,11 +10,11 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "note")
-@JsonIgnoreProperties(value = {"user"})
 public class Note {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @JsonIgnore
     private Long id;
 
     @Column(name = "text")
@@ -28,6 +29,7 @@ public class Note {
             cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH},
     fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     public Note() {

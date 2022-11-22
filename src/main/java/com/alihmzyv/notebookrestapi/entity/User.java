@@ -1,7 +1,9 @@
 package com.alihmzyv.notebookrestapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModelProperty;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -13,11 +15,11 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "users")
-@JsonIgnoreProperties(value = {"id", "notes"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @JsonIgnore
     private Long id;
 
     @Column(name = "firstName")
@@ -57,7 +59,7 @@ public class User {
     @NotBlank(message = "Password is a required field.")
     @Size(min = 6, message = "Password should contain at least 6 characters")
     @ApiModelProperty(
-            value = "Password of the user. Should be contain at least 6 characters.",
+            value = "Password of the user. Should contain at least 6 characters.",
             required = true
     )
     private String password;
@@ -65,6 +67,7 @@ public class User {
     @OneToMany(mappedBy = "user",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Note> notes;
 
     public User() {
