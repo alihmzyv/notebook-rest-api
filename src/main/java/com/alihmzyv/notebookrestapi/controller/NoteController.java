@@ -3,25 +3,32 @@ package com.alihmzyv.notebookrestapi.controller;
 import com.alihmzyv.notebookrestapi.entity.Note;
 import com.alihmzyv.notebookrestapi.entity.model.NoteModel;
 import com.alihmzyv.notebookrestapi.entity.model.assembler.NoteModelAssembler;
-import com.alihmzyv.notebookrestapi.exception.NoteNotFoundException;
-import com.alihmzyv.notebookrestapi.repo.NoteRepository;
 import com.alihmzyv.notebookrestapi.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/notes")
 public class NoteController {
-    private NoteService noteService;
-    private NoteModelAssembler noteModelAssembler;
+    private final NoteService noteService;
+    private final NoteModelAssembler noteModelAssembler;
 
     @Autowired
     public NoteController(NoteService noteService, NoteModelAssembler noteModelAssembler) {
         this.noteService = noteService;
         this.noteModelAssembler = noteModelAssembler;
+    }
+
+    @GetMapping
+    public List<Note> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "") List<String> sort) {
+        return noteService.findAll(page, size, sort);
     }
 
     @GetMapping(path = "/{noteId}")
