@@ -4,16 +4,30 @@ import com.alihmzyv.notebookrestapi.entity.Note;
 import com.alihmzyv.notebookrestapi.exception.NoteNotFoundException;
 import com.alihmzyv.notebookrestapi.repo.NoteRepository;
 import com.alihmzyv.notebookrestapi.service.NoteService;
+import com.alihmzyv.notebookrestapi.service.SortingHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class NoteServiceImpl implements NoteService {
-    private NoteRepository noteRepo;
+    private final NoteRepository noteRepo;
+    private final SortingHelper sortingHelper;
 
     @Autowired
-    public NoteServiceImpl(NoteRepository noteRepo) {
+    public NoteServiceImpl(NoteRepository noteRepo, SortingHelper sortingHelper) {
         this.noteRepo = noteRepo;
+        this.sortingHelper = sortingHelper;
+    }
+
+    @Override
+    public List<Note> findAll(int page, int size, List<String> sort) {
+        List<Sort.Order> sortProps = sortingHelper.createSortOrder(sort);
+        PageRequest pageable = PageRequest.of(page, size, Sort.by(sortProps));
+        return noteRepo.findAll(pageable).getContent();
     }
 
     @Override
