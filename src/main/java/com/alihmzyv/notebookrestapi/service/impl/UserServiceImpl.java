@@ -5,8 +5,12 @@ import com.alihmzyv.notebookrestapi.entity.User;
 import com.alihmzyv.notebookrestapi.exception.UserNotFoundException;
 import com.alihmzyv.notebookrestapi.repo.NoteRepository;
 import com.alihmzyv.notebookrestapi.repo.UserRepository;
+import com.alihmzyv.notebookrestapi.service.SortingHelper;
 import com.alihmzyv.notebookrestapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,13 +19,23 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private UserRepository userRepo;
     private NoteRepository noteRepo;
+    private SortingHelper sortingHelper;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepo, NoteRepository noteRepo) {
+    public UserServiceImpl(UserRepository userRepo, NoteRepository noteRepo, SortingHelper sortingHelper) {
         this.userRepo = userRepo;
         this.noteRepo = noteRepo;
+        this.sortingHelper = sortingHelper;
     }
 
+    @Override
+    public List<User> findAll(int page, int size, List<String> sort) {
+        List<Sort.Order> sortProps = sortingHelper.createSortOrder(sort);
+        PageRequest pageable = PageRequest.of(page, size, Sort.by(sortProps));
+        return userRepo.findAll(pageable).getContent();
+    }
+
+    @Override
     public User findUserById(Long userId) {
         return userRepo.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(
@@ -47,8 +61,11 @@ public class UserServiceImpl implements UserService {
         userRepo.deleteById(userId);
     }
 
-    public List<Note> findNotesByUserId(Long userId) {
-        return findUserById(userId).getNotes();
+    public List<Note> findNotesByUserId(Long userId, int page, int size, List<String> sort) {
+        requiresUserExistsById(userId);
+        List<Sort.Order> sortProps = sortingHelper.createSortOrder(sort);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortProps));
+        return noteRepo.findAllByUserId(userId, pageable);
     }
 
     @Override
