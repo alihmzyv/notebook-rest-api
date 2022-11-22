@@ -17,9 +17,9 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private UserRepository userRepo;
-    private NoteRepository noteRepo;
-    private SortingHelper sortingHelper;
+    private final UserRepository userRepo;
+    private final NoteRepository noteRepo;
+    private final SortingHelper sortingHelper;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepo, NoteRepository noteRepo, SortingHelper sortingHelper) {
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll(int page, int size, List<String> sort) {
+    public List<User> findAllUsers(int page, int size, List<String> sort) {
         List<Sort.Order> sortProps = sortingHelper.createSortOrder(sort);
         PageRequest pageable = PageRequest.of(page, size, Sort.by(sortProps));
         return userRepo.findAll(pageable).getContent();
@@ -59,20 +59,6 @@ public class UserServiceImpl implements UserService {
     public void deleteUserById(Long userId) {
         requiresUserExistsById(userId);
         userRepo.deleteById(userId);
-    }
-
-    public List<Note> findNotesByUserId(Long userId, int page, int size, List<String> sort) {
-        requiresUserExistsById(userId);
-        List<Sort.Order> sortProps = sortingHelper.createSortOrder(sort);
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortProps));
-        return noteRepo.findAllByUserId(userId, pageable);
-    }
-
-    @Override
-    public void createNote(Long userId, Note note) {
-        User userFound = findUserById(userId);
-        note.setUser(userFound);
-        noteRepo.save(note);
     }
 
     @Override
