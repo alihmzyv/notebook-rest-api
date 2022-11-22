@@ -28,14 +28,20 @@ import java.util.Set;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig implements WebMvcConfigurer {
-    private static final Contact DEFAULT_CONTACT = new Contact("Ali Hamzayev", "github.com/alihmzyv",
+    private static final Contact DEFAULT_CONTACT = new Contact(
+            "Ali Hamzayev",
+            "github.com/alihmzyv",
             "alihmzyv@gmail.com");
     private static final ApiInfo DEFAULT_API_INFO =
-            new ApiInfo("Notebook API Documentation", "Api Documentation", "1.0",
-                    "urn:tos", DEFAULT_CONTACT, "Apache 2.0", "http://www.apache.org/licenses/LICENSE-2.0",
+            new ApiInfo("Notebook API Documentation",
+                    "Api Documentation",
+                        "1.0",
+                    "urn:tos",
+                    DEFAULT_CONTACT,
+                    "Apache 2.0",
+                    "http://www.apache.org/licenses/LICENSE-2.0",
                     new ArrayList<>());
-    private static final Set<String> DEFAULT_PRODUCES_AND_CONSUMES =
-            Set.of("application/json");
+    private static final Set<String> DEFAULT_PRODUCES_AND_CONSUMES = Set.of("application/json");
 
 
     @Bean
@@ -55,7 +61,5 @@ public class SwaggerConfig implements WebMvcConfigurer {
         List<LinkDiscoverer> plugins = new ArrayList<>();
         plugins.add(new CollectionJsonLinkDiscoverer());
         return new LinkDiscoverers(SimplePluginRegistry.create(plugins));
-
     }
-
 }

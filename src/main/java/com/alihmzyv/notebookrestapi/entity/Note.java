@@ -27,7 +27,7 @@ public class Note {
 
     @ManyToOne(
             cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH},
-    fetch = FetchType.EAGER)
+            fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;

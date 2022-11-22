@@ -27,10 +27,10 @@ public class UserModelAssembler extends RepresentationModelAssemblerSupport<User
     @SneakyThrows
     protected UserModel createModelWithId(Object id, User entity) {
         UserModel userModel = instantiateModel(entity);
-        WebMvcLinkBuilder builder = linkTo(methodOn(UserController.class).findUserById(entity.getId()));
+        WebMvcLinkBuilder linkBuilder = linkTo(methodOn(UserController.class).findUserById(entity.getId()));
         userModel.add(
-                builder.withSelfRel(),
-                builder.slash("notes")
+                linkBuilder.withSelfRel(),
+                linkBuilder.slash("notes")
                         .withRel("notes")
         );
         return userModel;

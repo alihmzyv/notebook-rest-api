@@ -22,7 +22,8 @@ public class NoteController {
     private final NoteModelAssembler noteModelAssembler;
 
     @Autowired
-    public NoteController(NoteService noteService, NoteModelAssembler noteModelAssembler) {
+    public NoteController(NoteService noteService,
+                          NoteModelAssembler noteModelAssembler) {
         this.noteService = noteService;
         this.noteModelAssembler = noteModelAssembler;
     }
@@ -52,10 +53,10 @@ public class NoteController {
     }
 
     @DeleteMapping(path = "/{noteId}")
-    public ResponseEntity<NoteModel> deleteNote(
-            @PathVariable Long noteId) {
+    public ResponseEntity<NoteModel> deleteNote(@PathVariable Long noteId) {
         noteService.deleteNoteById(noteId);
         return ResponseEntity
-                .ok().build();
+                .ok()
+                .build();
     }
 }

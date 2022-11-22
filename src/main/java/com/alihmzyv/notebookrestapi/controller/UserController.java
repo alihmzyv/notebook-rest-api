@@ -28,8 +28,10 @@ public class UserController {
     private final NoteService noteService;
 
     @Autowired
-    public UserController(UserModelAssembler userModelAssembler, NoteModelAssembler noteModelAssembler,
-                          UserService userService, NoteService noteService) {
+    public UserController(UserModelAssembler userModelAssembler,
+                          NoteModelAssembler noteModelAssembler,
+                          UserService userService,
+                          NoteService noteService) {
         this.userModelAssembler = userModelAssembler;
         this.noteModelAssembler = noteModelAssembler;
         this.userService = userService;
@@ -63,12 +65,8 @@ public class UserController {
     }
 
     @PutMapping(path = "/{userId}")
-    public ResponseEntity<UserModel> updateUser(
-            @PathVariable Long userId,
-            @RequestBody @Valid User user) {
-        userService.requiresUserExistsById(userId);
-        user.setId(userId);
-        userService.saveUser(user);
+    public ResponseEntity<UserModel> updateUser(@PathVariable Long userId, @RequestBody @Valid User user) {
+        userService.updateUser(userId, user);
         return ResponseEntity
                 .ok(userModelAssembler.toModel(user));
     }
@@ -85,8 +83,8 @@ public class UserController {
     public ResponseEntity<UserModel> findUserByEmailOrUsernameAndPassword(@RequestParam String emailAddressOrUsername,
                                                                           @RequestParam String password) {
         User userFound = userService.findUserByEmailAddressOrUsernameAndPassword(
-                emailAddressOrUsername, password
-        );
+                emailAddressOrUsername,
+                password);
         return ResponseEntity
                 .ok(userModelAssembler.toModel(userFound));
     }

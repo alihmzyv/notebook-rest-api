@@ -31,10 +31,11 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public List<Note> findAllNotesByUserId(Long id, int page, int size, List<String> sort) {
+    public List<Note> findAllNotesByUserId(Long userId, int page, int size, List<String> sort) {
         List<Sort.Order> sortProps = sortingHelper.createSortOrder(sort);
         PageRequest pageable = PageRequest.of(page, size, Sort.by(sortProps));
-        return noteRepo.findAllByUserId(id, pageable);
+        requiresNoteExistsById(userId);
+        return noteRepo.findAllByUserId(userId, pageable);
     }
 
     @Override
@@ -51,10 +52,10 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public Note updateNote(Long noteId, Note note) {
-        Note noteFound = findNoteById(noteId);
-        noteFound.setText(note.getText());
-        noteRepo.save(noteFound);
-        return noteFound;
+        requiresNoteExistsById(noteId);
+        note.setId(noteId);
+        noteRepo.save(note);
+        return note;
     }
 
     @Override

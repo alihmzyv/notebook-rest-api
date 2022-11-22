@@ -56,6 +56,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updateUser(Long userId, User user) {
+        requiresUserExistsById(userId);
+        user.setId(userId);
+        userRepo.save(user);
+    }
+
+    @Override
     public void deleteUserById(Long userId) {
         requiresUserExistsById(userId);
         userRepo.deleteById(userId);
