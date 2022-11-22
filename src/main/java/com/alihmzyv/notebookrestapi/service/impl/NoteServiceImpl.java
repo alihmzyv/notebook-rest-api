@@ -34,7 +34,6 @@ public class NoteServiceImpl implements NoteService {
     public List<Note> findAllNotesByUserId(Long userId, int page, int size, List<String> sort) {
         List<Sort.Order> sortProps = sortingHelper.createSortOrder(sort);
         PageRequest pageable = PageRequest.of(page, size, Sort.by(sortProps));
-        requiresNoteExistsById(userId);
         return noteRepo.findAllByUserId(userId, pageable);
     }
 
