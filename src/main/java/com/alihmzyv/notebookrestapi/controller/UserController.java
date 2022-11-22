@@ -6,9 +6,6 @@ import com.alihmzyv.notebookrestapi.entity.model.NoteModel;
 import com.alihmzyv.notebookrestapi.entity.model.UserModel;
 import com.alihmzyv.notebookrestapi.entity.model.assembler.NoteModelAssembler;
 import com.alihmzyv.notebookrestapi.entity.model.assembler.UserModelAssembler;
-import com.alihmzyv.notebookrestapi.exception.UserNotFoundException;
-import com.alihmzyv.notebookrestapi.repo.NoteRepository;
-import com.alihmzyv.notebookrestapi.repo.UserRepository;
 import com.alihmzyv.notebookrestapi.service.NoteService;
 import com.alihmzyv.notebookrestapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,25 +41,9 @@ public class UserController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "") List<String> sort) {
-        return userModelAssembler.toCollectionModel(userService.findAll(page, size, sort))
+        return userModelAssembler.toCollectionModel(userService.findAllUsers(page, size, sort))
                 .add(linkTo(methodOn(this.getClass()).findAll(page, size, sort))
                         .withSelfRel());
-    }
-
-    @GetMapping(path = "/{userId}")
-    public ResponseEntity<UserModel> findUserById(@PathVariable Long userId) {
-        return ResponseEntity
-                .ok(userModelAssembler.toModel(userService.findUserById(userId)));
-    }
-
-    @PostMapping(path = "/search", params = {"emailAddressOrUsername", "password"})
-    public ResponseEntity<UserModel> findUserByEmailOrUsernameAndPassword(@RequestParam String emailAddressOrUsername,
-                                                                          @RequestParam String password) {
-        User userFound = userService.findUserByEmailAddressOrUsernameAndPassword(
-                emailAddressOrUsername, password
-        );
-        return ResponseEntity
-                .ok(userModelAssembler.toModel(userFound));
     }
 
     @PostMapping
@@ -73,6 +54,12 @@ public class UserController {
                         .getLink("self")
                         .get().toUri())
                 .build();
+    }
+
+    @GetMapping(path = "/{userId}")
+    public ResponseEntity<UserModel> findUserById(@PathVariable Long userId) {
+        return ResponseEntity
+                .ok(userModelAssembler.toModel(userService.findUserById(userId)));
     }
 
     @PutMapping(path = "/{userId}")
@@ -93,15 +80,27 @@ public class UserController {
                 .ok(null);
     }
 
+    @PostMapping(path = "/search", params = {"emailAddressOrUsername", "password"})
+    public ResponseEntity<UserModel> findUserByEmailOrUsernameAndPassword(@RequestParam String emailAddressOrUsername,
+                                                                          @RequestParam String password) {
+        User userFound = userService.findUserByEmailAddressOrUsernameAndPassword(
+                emailAddressOrUsername, password
+        );
+        return ResponseEntity
+                .ok(userModelAssembler.toModel(userFound));
+    }
+
+    //notes
     @GetMapping(path = "/{userId}/notes")
-    public ResponseEntity<CollectionModel<NoteModel>> findNotesOfUserByUserId(
+    public ResponseEntity<CollectionModel<NoteModel>> findNotesByUserId(
             @PathVariable Long userId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "") List<String> sort) {
-        List<Note> notes = userService.findNotesByUserId(userId, page, size, sort);
+        userService.requiresUserExistsById(userId);
+        List<Note> notes =noteService.findAllNotesByUserId(userId, page, size, sort);
         CollectionModel<NoteModel> collectionModel = noteModelAssembler.toCollectionModel(notes)
-                .add(linkTo(methodOn(this.getClass()).findNotesOfUserByUserId(userId, page, size, sort))
+                .add(linkTo(methodOn(this.getClass()).findNotesByUserId(userId, page, size, sort))
                         .withSelfRel());
         return ResponseEntity
                 .ok(collectionModel);
@@ -111,7 +110,8 @@ public class UserController {
     public ResponseEntity<NoteModel> createNote(
             @PathVariable Long userId,
             @RequestBody @Valid Note note) {
-        userService.createNote(userId, note);
+        note.setUser(userService.findUserById(userId));
+        noteService.saveNote(note);
         return ResponseEntity
                 .created(noteModelAssembler.toModel(note)
                         .getLink("self")
