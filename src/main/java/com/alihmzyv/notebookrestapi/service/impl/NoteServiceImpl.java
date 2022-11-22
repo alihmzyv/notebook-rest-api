@@ -51,8 +51,9 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public Note updateNote(Long noteId, Note note) {
-        requiresNoteExistsById(noteId);
+        Note noteFound = findNoteById(noteId);
         note.setId(noteId);
+        note.setUser(noteFound.getUser());
         noteRepo.save(note);
         return note;
     }
