@@ -1,6 +1,7 @@
 package com.alihmzyv.notebookrestapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -17,6 +18,10 @@ public class Note {
 
     @Column(name = "text")
     @NotBlank(message = "Note cannot be null.")
+    @ApiModelProperty(
+            value = "Content of the note.",
+            required = true
+    )
     private String text;
 
     @ManyToOne(
