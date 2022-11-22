@@ -24,10 +24,17 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public List<Note> findAll(int page, int size, List<String> sort) {
+    public List<Note> findAllNotes(int page, int size, List<String> sort) {
         List<Sort.Order> sortProps = sortingHelper.createSortOrder(sort);
         PageRequest pageable = PageRequest.of(page, size, Sort.by(sortProps));
         return noteRepo.findAll(pageable).getContent();
+    }
+
+    @Override
+    public List<Note> findAllNotesByUserId(Long id, int page, int size, List<String> sort) {
+        List<Sort.Order> sortProps = sortingHelper.createSortOrder(sort);
+        PageRequest pageable = PageRequest.of(page, size, Sort.by(sortProps));
+        return noteRepo.findAllByUserId(id, pageable);
     }
 
     @Override
@@ -35,6 +42,11 @@ public class NoteServiceImpl implements NoteService {
         return noteRepo.findById(noteId)
                 .orElseThrow(() ->
                         new NoteNotFoundException(String.format("Note could not be found: id = %d", noteId)));
+    }
+
+    @Override
+    public void saveNote(Note note) {
+        noteRepo.save(note);
     }
 
     @Override
