@@ -25,10 +25,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @RequestMapping(path = "/users")
 public class UserController {
-    private UserModelAssembler userModelAssembler;
-    private NoteModelAssembler noteModelAssembler;
-    private UserService userService;
-    private NoteService noteService;
+    private final UserModelAssembler userModelAssembler;
+    private final NoteModelAssembler noteModelAssembler;
+    private final UserService userService;
+    private final NoteService noteService;
 
     @Autowired
     public UserController(UserModelAssembler userModelAssembler, NoteModelAssembler noteModelAssembler,
@@ -37,6 +37,16 @@ public class UserController {
         this.noteModelAssembler = noteModelAssembler;
         this.userService = userService;
         this.noteService = noteService;
+    }
+
+    @GetMapping
+    public CollectionModel<UserModel> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "") List<String> sort) {
+        return userModelAssembler.toCollectionModel(userService.findAll(page, size, sort))
+                .add(linkTo(methodOn(this.getClass()).findAll(page, size, sort))
+                        .withSelfRel());
     }
 
     @GetMapping(path = "/{userId}")
@@ -84,10 +94,14 @@ public class UserController {
     }
 
     @GetMapping(path = "/{userId}/notes")
-    public ResponseEntity<CollectionModel<NoteModel>> findNotesOfUserByUserId(@PathVariable Long userId) {
-        List<Note> notes = userService.findNotesByUserId(userId);
+    public ResponseEntity<CollectionModel<NoteModel>> findNotesOfUserByUserId(
+            @PathVariable Long userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "") List<String> sort) {
+        List<Note> notes = userService.findNotesByUserId(userId, page, size, sort);
         CollectionModel<NoteModel> collectionModel = noteModelAssembler.toCollectionModel(notes)
-                .add(linkTo(methodOn(this.getClass()).findNotesOfUserByUserId(userId))
+                .add(linkTo(methodOn(this.getClass()).findNotesOfUserByUserId(userId, page, size, sort))
                         .withSelfRel());
         return ResponseEntity
                 .ok(collectionModel);
