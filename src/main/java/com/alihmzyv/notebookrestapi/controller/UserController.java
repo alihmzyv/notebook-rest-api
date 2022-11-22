@@ -47,7 +47,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserModel> createUser(@RequestBody @Valid User user) {
+    public ResponseEntity<Object> createUser(@RequestBody @Valid User user) {
         userService.saveUser(user);
         return ResponseEntity
                 .created(userModelAssembler.toModel(user)
@@ -74,10 +74,11 @@ public class UserController {
     }
 
     @DeleteMapping(path = "/{userId}")
-    public ResponseEntity<UserModel> deleteUser(@PathVariable Long userId) {
+    public ResponseEntity<Object> deleteUser(@PathVariable Long userId) {
         userService.deleteUserById(userId);
         return ResponseEntity
-                .ok(null);
+                .ok()
+                .build();
     }
 
     @PostMapping(path = "/search", params = {"emailAddressOrUsername", "password"})
@@ -107,7 +108,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/{userId}/notes")
-    public ResponseEntity<NoteModel> createNote(
+    public ResponseEntity<Object> createNote(
             @PathVariable Long userId,
             @RequestBody @Valid Note note) {
         note.setUser(userService.findUserById(userId));
