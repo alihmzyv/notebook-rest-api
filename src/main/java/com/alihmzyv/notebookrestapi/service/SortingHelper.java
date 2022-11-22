@@ -12,7 +12,6 @@ public class SortingHelper {
                 && (sort.get(1).equalsIgnoreCase("asc") || sort.get(1).equalsIgnoreCase("desc"))) {
             return List.of(new Sort.Order(Sort.Direction.fromString(sort.get(1)), sort.get(0)));
         }
-        System.out.println(sort);
         return sort.stream()
                 .map(sortAndOrder -> sortAndOrder.split(","))
                 .map(sortAndOrder -> {
