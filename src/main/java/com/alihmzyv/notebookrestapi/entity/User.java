@@ -49,6 +49,7 @@ public class User {
     @Email(message = "Email address should be a well-formed email address.")
     @ApiModelProperty(
             value = "Email address of the user. Should be a unique, well-formed email address.",
+            example = "alihmzyv@gmail.com",
             required = true
     )
     private String emailAddress;
