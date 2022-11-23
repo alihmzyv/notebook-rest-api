@@ -1,10 +1,7 @@
 package com.alihmzyv.notebookrestapi.entity.model;
 
 import com.alihmzyv.notebookrestapi.entity.Note;
-import com.alihmzyv.notebookrestapi.entity.User;
 import org.springframework.hateoas.RepresentationModel;
-
-import javax.persistence.*;
 
 public class NoteModel extends RepresentationModel<NoteModel> {
     private String text;

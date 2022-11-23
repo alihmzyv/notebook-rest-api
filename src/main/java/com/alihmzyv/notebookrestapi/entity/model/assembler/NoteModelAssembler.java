@@ -2,7 +2,6 @@ package com.alihmzyv.notebookrestapi.entity.model.assembler;
 
 import com.alihmzyv.notebookrestapi.controller.NoteController;
 import com.alihmzyv.notebookrestapi.entity.Note;
-import com.alihmzyv.notebookrestapi.entity.User;
 import com.alihmzyv.notebookrestapi.entity.model.NoteModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;

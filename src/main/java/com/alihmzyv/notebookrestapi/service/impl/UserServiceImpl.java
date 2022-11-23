@@ -1,6 +1,5 @@
 package com.alihmzyv.notebookrestapi.service.impl;
 
-import com.alihmzyv.notebookrestapi.entity.Note;
 import com.alihmzyv.notebookrestapi.entity.User;
 import com.alihmzyv.notebookrestapi.exception.UserNotFoundException;
 import com.alihmzyv.notebookrestapi.repo.NoteRepository;
@@ -9,7 +8,6 @@ import com.alihmzyv.notebookrestapi.service.SortingHelper;
 import com.alihmzyv.notebookrestapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
