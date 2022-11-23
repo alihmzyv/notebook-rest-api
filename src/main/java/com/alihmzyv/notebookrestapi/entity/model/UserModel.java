@@ -8,14 +8,12 @@ public class UserModel extends RepresentationModel<UserModel> {
     private String lastName;
     private String username;
     private String emailAddress;
-    private String password;
 
     public UserModel(User user) {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.emailAddress = user.getEmailAddress();
         this.username = user.getUsername();
-        this.password = user.getPassword();
     }
 
     public UserModel() {
@@ -55,13 +53,5 @@ public class UserModel extends RepresentationModel<UserModel> {
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }
