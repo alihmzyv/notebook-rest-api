@@ -143,8 +143,8 @@ public class UserController {
             @ApiParam(
                     name = "emailAddressOrUsername",
                     value = "Email address or username of the user.",
-                    example = "alihmzyv@gmail.com, or alihmzyv") @RequestParam String emailAddressOrUsername,
-                                                                 @RequestParam String password) {
+                    example = "alihmzyv") @RequestParam String emailAddressOrUsername,
+                                          @RequestParam String password) {
         User userFound = userService.findUserByEmailAddressOrUsernameAndPassword(
                 emailAddressOrUsername,
                 password);
