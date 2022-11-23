@@ -12,7 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +20,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
     private final NoteRepository noteRepo;
     private final SortingHelper sortingHelper;
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepo,
