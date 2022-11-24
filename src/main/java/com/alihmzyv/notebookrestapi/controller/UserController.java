@@ -46,11 +46,12 @@ public class UserController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully retrieved.")})
     @GetMapping
     public CollectionModel<UserModel> findAllUsers(
-            @ApiParam(name = "page number", defaultValue = "0")
+            @ApiParam(name = "page number", type = "integer", defaultValue = "0")
             @RequestParam(defaultValue = "0") int page,
-            @ApiParam(name = "page size", defaultValue = "10")
+            @ApiParam(name = "page size", type = "integer", defaultValue = "10")
             @RequestParam(defaultValue = "10") int size,
             @ApiParam(name = "sort property,order",
+                      type = "string",
                       value = "Sorting property and order. The parameter can have multiple values.",
                     example = "firstName,desc")
             @RequestParam(defaultValue = "") List<String> sort) {
@@ -85,7 +86,7 @@ public class UserController {
                     @ApiResponse(code = 404, message = "User not found: id = ..")})
     @GetMapping(path = "/{userId}")
     public ResponseEntity<UserModel> findUserById(
-            @ApiParam(name = "user ID", value = "An integer representing user ID")
+            @ApiParam(name = "user ID", type = "integer", value = "An integer representing user ID")
             @PathVariable Long userId) {
         return ResponseEntity
                 .ok(userModelAssembler.toModel(userService.findUserById(userId)));
@@ -100,7 +101,7 @@ public class UserController {
                     @ApiResponse(code = 404, message = "User not found: id = ..")})
     @PutMapping(path = "/{userId}")
     public ResponseEntity<UserModel> updateUser(
-            @ApiParam(name = "user ID", value = "An integer representing user ID")
+            @ApiParam(name = "user ID", type = "integer", value = "An integer representing user ID")
             @PathVariable Long userId,
             @RequestBody @Valid User user) {
         userService.updateUser(userId, user);
@@ -117,7 +118,7 @@ public class UserController {
                     @ApiResponse(code = 404, message = "User not found: id = ..")})
     @DeleteMapping(path = "/{userId}")
     public ResponseEntity<Object> deleteUser(
-            @ApiParam(name = "user ID", value = "An integer representing user ID")
+            @ApiParam(name = "user ID", type = "integer", value = "An integer representing user ID")
             @PathVariable Long userId) {
         userService.deleteUserById(userId);
         return ResponseEntity
@@ -137,6 +138,7 @@ public class UserController {
     public ResponseEntity<UserModel> findUserByEmailOrUsernameAndPassword(
             @ApiParam(
                     name = "emailAddressOrUsername",
+                    type = "string",
                     value = "Email address or username of the user.",
                     example = "alihmzyv")
             @RequestParam String emailAddressOrUsername,
@@ -158,14 +160,15 @@ public class UserController {
                     @ApiResponse(code = 404, message = "User not found: id = ..")})
     @GetMapping(path = "/{userId}/notes")
     public ResponseEntity<CollectionModel<NoteModel>> findNotesByUserId(
-            @ApiParam(name = "user ID", value = "An integer representing user ID")
+            @ApiParam(name = "user ID", type = "integer", value = "An integer representing user ID")
             @PathVariable Long userId,
-            @ApiParam(name = "page number", defaultValue = "0")
+            @ApiParam(name = "page number", type = "integer", defaultValue = "0")
             @RequestParam(defaultValue = "0") int page,
-            @ApiParam(name = "page size", defaultValue = "10")
+            @ApiParam(name = "page size", type = "integer", defaultValue = "10")
             @RequestParam(defaultValue = "10") int size,
             @ApiParam(
                     name = "sort property,order",
+                    type = "string",
                     value = "Sorting property and order. Can have multiple values.",
                     example = "text,asc")
             @RequestParam(defaultValue = "") List<String> sort) {
@@ -187,7 +190,7 @@ public class UserController {
                     @ApiResponse(code = 404, message = "User not found: id = ..")})
     @PostMapping(path = "/{userId}/notes")
     public ResponseEntity<Object> createNote(
-            @ApiParam(name = "user ID", value = "An integer representing user ID")
+            @ApiParam(name = "user ID", type = "integer", value = "An integer representing user ID")
             @PathVariable Long userId,
             @RequestBody @Valid Note note) {
         note.setUser(userService.findUserById(userId));
