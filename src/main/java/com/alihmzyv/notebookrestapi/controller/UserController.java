@@ -53,7 +53,7 @@ public class UserController {
             @ApiParam(name = "sort property,order",
                       type = "string",
                       value = "Sorting property and order. The parameter can have multiple values.",
-                    example = "firstName,desc")
+                      example = "firstName,desc")
             @RequestParam(defaultValue = "") List<String> sort) {
         return userModelAssembler.toCollectionModel(userService.findAllUsers(page, size, sort))
                 .add(linkTo(methodOn(this.getClass()).findAllUsers(page, size, sort))
