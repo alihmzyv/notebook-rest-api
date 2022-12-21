@@ -11,4 +11,4 @@ auth:
 
 username: client
 
-password: password
+password: 123456
