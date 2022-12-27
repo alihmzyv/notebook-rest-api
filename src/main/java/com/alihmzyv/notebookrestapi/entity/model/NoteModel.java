@@ -4,9 +4,11 @@ import com.alihmzyv.notebookrestapi.entity.Note;
 import org.springframework.hateoas.RepresentationModel;
 
 public class NoteModel extends RepresentationModel<NoteModel> {
+    private String title;
     private String text;
 
     public NoteModel(Note note) {
+        this.title = note.getTitle();
         this.text = note.getText();
     }
 
@@ -21,7 +23,15 @@ public class NoteModel extends RepresentationModel<NoteModel> {
         return text;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public void setText(String text) {
         this.text = text;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
