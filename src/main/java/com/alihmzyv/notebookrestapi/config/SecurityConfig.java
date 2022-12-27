@@ -1,6 +1,7 @@
 package com.alihmzyv.notebookrestapi.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final DataSource dataSource;
 
     @Autowired
-    public SecurityConfig(DataSource dataSource) {
+    public SecurityConfig(@Qualifier("api-datasource") DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
