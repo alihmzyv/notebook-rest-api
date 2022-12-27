@@ -16,6 +16,9 @@ public class Note {
     @JsonIgnore
     private Long id;
 
+    @Column(name = "title")
+    private String title;
+
     @Column(name = "text")
     @NotBlank(message = "Note cannot be null.")
     @ApiModelProperty(
@@ -56,6 +59,14 @@ public class Note {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
