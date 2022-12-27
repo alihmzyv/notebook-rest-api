@@ -17,6 +17,9 @@ public class Note {
     private Long id;
 
     @Column(name = "title")
+    @ApiModelProperty(
+            value = "Title of the note."
+    )
     private String title;
 
     @Column(name = "text")
