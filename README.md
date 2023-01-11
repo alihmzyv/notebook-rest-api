@@ -7,6 +7,7 @@ http://notebook-api-23.de.r.appspot.com/api/v1
 swagger doc:
 http://notebook-api-23.de.r.appspot.com/api/v1/swagger-ui.html
 
+To try out:
 auth:
 
 username: client
