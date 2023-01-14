@@ -2,8 +2,8 @@ package com.alihmzyv.notebookrestapi.service.impl;
 
 import com.alihmzyv.notebookrestapi.entity.User;
 import com.alihmzyv.notebookrestapi.exception.dublicate.EmailAddressDuplicateNotAllowed;
-import com.alihmzyv.notebookrestapi.exception.notfound.UserNotFoundException;
 import com.alihmzyv.notebookrestapi.exception.dublicate.UsernameDuplicateNotAllowed;
+import com.alihmzyv.notebookrestapi.exception.notfound.UserNotFoundException;
 import com.alihmzyv.notebookrestapi.repo.NoteRepository;
 import com.alihmzyv.notebookrestapi.repo.UserRepository;
 import com.alihmzyv.notebookrestapi.service.SortingHelper;
