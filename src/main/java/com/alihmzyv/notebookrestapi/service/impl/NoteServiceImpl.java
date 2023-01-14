@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -46,6 +47,9 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public void saveNote(Note note) {
+        LocalDateTime now = LocalDateTime.now();
+        note.setDateTimeCreated(now);
+        note.setDateTimeLastModified(now);
         noteRepo.save(note);
     }
 
@@ -54,6 +58,7 @@ public class NoteServiceImpl implements NoteService {
         Note noteFound = findNoteById(noteId);
         note.setId(noteId);
         note.setUser(noteFound.getUser());
+        note.setDateTimeLastModified(LocalDateTime.now());
         noteRepo.save(note);
         return note;
     }

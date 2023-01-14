@@ -3,6 +3,7 @@ package com.alihmzyv.notebookrestapi.entity;
 import com.alihmzyv.notebookrestapi.entity.model.req.NoteReqModel;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -19,14 +20,17 @@ public class Note {
     @Column(name = "text")
     private String text;
 
+    @Column(name = "created")
+    private LocalDateTime dateTimeCreated;
+
+    @Column(name = "last_modified")
+    private LocalDateTime dateTimeLastModified;
+
     @ManyToOne(
             cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH},
             fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
-
-    public Note() {
-    }
 
     public static Note of(NoteReqModel entity) {
         Note note = new Note();
@@ -65,6 +69,22 @@ public class Note {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public LocalDateTime getDateTimeCreated() {
+        return dateTimeCreated;
+    }
+
+    public void setDateTimeCreated(LocalDateTime dateTimeCreated) {
+        this.dateTimeCreated = dateTimeCreated;
+    }
+
+    public LocalDateTime getDateTimeLastModified() {
+        return dateTimeLastModified;
+    }
+
+    public void setDateTimeLastModified(LocalDateTime dateTimeLastModified) {
+        this.dateTimeLastModified = dateTimeLastModified;
     }
 
     @Override
