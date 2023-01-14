@@ -1,4 +1,4 @@
-package com.alihmzyv.notebookrestapi.exception;
+package com.alihmzyv.notebookrestapi.exception.model;
 
 import java.time.Instant;
 import java.util.List;

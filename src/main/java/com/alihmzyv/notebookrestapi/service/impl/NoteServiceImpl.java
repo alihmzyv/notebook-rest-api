@@ -1,7 +1,7 @@
 package com.alihmzyv.notebookrestapi.service.impl;
 
 import com.alihmzyv.notebookrestapi.entity.Note;
-import com.alihmzyv.notebookrestapi.exception.NoteNotFoundException;
+import com.alihmzyv.notebookrestapi.exception.notfound.NoteNotFoundException;
 import com.alihmzyv.notebookrestapi.repo.NoteRepository;
 import com.alihmzyv.notebookrestapi.service.NoteService;
 import com.alihmzyv.notebookrestapi.service.SortingHelper;

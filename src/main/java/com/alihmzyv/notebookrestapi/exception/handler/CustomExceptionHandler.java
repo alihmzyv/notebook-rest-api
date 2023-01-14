@@ -1,5 +1,8 @@
-package com.alihmzyv.notebookrestapi.exception;
+package com.alihmzyv.notebookrestapi.exception.handler;
 
+import com.alihmzyv.notebookrestapi.exception.dublicate.DuplicateNotAllowedException;
+import com.alihmzyv.notebookrestapi.exception.model.CustomErrorResponse;
+import com.alihmzyv.notebookrestapi.exception.notfound.NotFoundException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpHeaders;
@@ -42,8 +45,8 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(new CustomErrorResponse(HttpStatus.NOT_FOUND.value(), List.of(exc.getMessage())));
     }
 
-    @ExceptionHandler
-    public ResponseEntity<Object> handlePropertyReference(PropertyReferenceException exc) {
+    @ExceptionHandler({DuplicateNotAllowedException.class, PropertyReferenceException.class})
+    public ResponseEntity<Object> handlePropertyReference(Exception exc) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new CustomErrorResponse(HttpStatus.BAD_REQUEST.value(), List.of(exc.getMessage())));

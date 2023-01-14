@@ -1,7 +1,9 @@
 package com.alihmzyv.notebookrestapi.service.impl;
 
 import com.alihmzyv.notebookrestapi.entity.User;
-import com.alihmzyv.notebookrestapi.exception.UserNotFoundException;
+import com.alihmzyv.notebookrestapi.exception.dublicate.EmailAddressDuplicateNotAllowed;
+import com.alihmzyv.notebookrestapi.exception.notfound.UserNotFoundException;
+import com.alihmzyv.notebookrestapi.exception.dublicate.UsernameDuplicateNotAllowed;
 import com.alihmzyv.notebookrestapi.repo.NoteRepository;
 import com.alihmzyv.notebookrestapi.repo.UserRepository;
 import com.alihmzyv.notebookrestapi.service.SortingHelper;
@@ -21,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private final NoteRepository noteRepo;
     private final SortingHelper sortingHelper;
     private final PasswordEncoder passwordEncoder;
+
 
     @Autowired
     public UserServiceImpl(UserRepository userRepo,
@@ -61,6 +64,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUser(User user) {
+        requiresUniqueUserDetails(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
     }
@@ -82,5 +86,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public void requiresUserExistsById(Long userId) {
         findUserById(userId);
+    }
+
+    public void requiresUniqueUserDetails(User user) {
+        if (userRepo.existsByUsername(user.getUsername())) {
+            throw new UsernameDuplicateNotAllowed(String.format(
+                    "The username is already in use: %s", user.getUsername()));
+        }
+        if (userRepo.existsByEmailAddress(user.getEmailAddress())) {
+            throw new EmailAddressDuplicateNotAllowed(String.format(
+                    "The email address is already in use: %s", user.getEmailAddress()));
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.alihmzyv.notebookrestapi.exception;
+package com.alihmzyv.notebookrestapi.exception.notfound;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {

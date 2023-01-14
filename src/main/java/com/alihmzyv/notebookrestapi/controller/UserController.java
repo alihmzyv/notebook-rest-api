@@ -72,9 +72,10 @@ public class UserController {
                     @ApiResponse(code = 400, message = "Validation error message of the property of User.")})
     @PostMapping
     public ResponseEntity<Object> createUser(@RequestBody @Valid UserReqModel userReq) {
-        userService.saveUser(userAssembler.toModel(userReq));
+        User user = userAssembler.toModel(userReq);
+        userService.saveUser(user);
         return ResponseEntity
-                .created(userRespModelAssembler.toModel(userAssembler.toModel(userReq))
+                .created(userRespModelAssembler.toModel(user)
                         .getLink("self")
                         .get().toUri())
                 .build();
@@ -107,9 +108,10 @@ public class UserController {
             @ApiParam(name = "user ID", type = "integer", value = "An integer representing user ID")
             @PathVariable Long userId,
             @RequestBody @Valid UserReqModel userReq) {
-        userService.updateUser(userId, userAssembler.toModel(userReq));
+        User user = userAssembler.toModel(userReq);
+        userService.updateUser(userId, user);
         return ResponseEntity
-                .ok(userRespModelAssembler.toModel(userAssembler.toModel(userReq)));
+                .ok(userRespModelAssembler.toModel(user));
     }
 
     @ApiOperation(
