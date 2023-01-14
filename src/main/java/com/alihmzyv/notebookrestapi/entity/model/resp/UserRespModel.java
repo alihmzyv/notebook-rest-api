@@ -1,26 +1,26 @@
-package com.alihmzyv.notebookrestapi.entity.model;
+package com.alihmzyv.notebookrestapi.entity.model.resp;
 
 import com.alihmzyv.notebookrestapi.entity.User;
 import org.springframework.hateoas.RepresentationModel;
 
-public class UserModel extends RepresentationModel<UserModel> {
+public class UserRespModel extends RepresentationModel<UserRespModel> {
     private String firstName;
     private String lastName;
     private String username;
     private String emailAddress;
 
-    public UserModel(User user) {
+    public UserRespModel(User user) {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.emailAddress = user.getEmailAddress();
         this.username = user.getUsername();
     }
 
-    public UserModel() {
+    public UserRespModel() {
     }
 
-    public static UserModel of(User user) {
-        return new UserModel(user);
+    public static UserRespModel of(User user) {
+        return new UserRespModel(user);
     }
 
     public String getFirstName() {

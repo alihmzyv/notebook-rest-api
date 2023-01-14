@@ -2,17 +2,18 @@ package com.alihmzyv.notebookrestapi.controller;
 
 import com.alihmzyv.notebookrestapi.entity.Note;
 import com.alihmzyv.notebookrestapi.entity.User;
-import com.alihmzyv.notebookrestapi.entity.model.NoteModel;
-import com.alihmzyv.notebookrestapi.entity.model.UserModel;
-import com.alihmzyv.notebookrestapi.entity.model.assembler.NoteModelAssembler;
-import com.alihmzyv.notebookrestapi.entity.model.assembler.UserModelAssembler;
+import com.alihmzyv.notebookrestapi.entity.model.req.UserReqModel;
+import com.alihmzyv.notebookrestapi.entity.model.req.assembler.UserAssembler;
+import com.alihmzyv.notebookrestapi.entity.model.resp.NoteRespModel;
+import com.alihmzyv.notebookrestapi.entity.model.resp.UserRespModel;
+import com.alihmzyv.notebookrestapi.entity.model.resp.assembler.NoteRespModelAssembler;
+import com.alihmzyv.notebookrestapi.entity.model.resp.assembler.UserRespModelAssembler;
 import com.alihmzyv.notebookrestapi.service.NoteService;
 import com.alihmzyv.notebookrestapi.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,18 +27,20 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @RequestMapping(path = "/users")
 public class UserController {
-    private final UserModelAssembler userModelAssembler;
-    private final NoteModelAssembler noteModelAssembler;
+    private final UserRespModelAssembler userRespModelAssembler;
+    private final UserAssembler userAssembler;
+    private final NoteRespModelAssembler noteRespModelAssembler;
     private final UserService userService;
     private final NoteService noteService;
 
-    @Autowired
-    public UserController(UserModelAssembler userModelAssembler,
-                          NoteModelAssembler noteModelAssembler,
+    public UserController(UserRespModelAssembler userRespModelAssembler,
+                          UserAssembler userAssembler,
+                          NoteRespModelAssembler noteRespModelAssembler,
                           UserService userService,
                           NoteService noteService) {
-        this.userModelAssembler = userModelAssembler;
-        this.noteModelAssembler = noteModelAssembler;
+        this.userRespModelAssembler = userRespModelAssembler;
+        this.userAssembler = userAssembler;
+        this.noteRespModelAssembler = noteRespModelAssembler;
         this.userService = userService;
         this.noteService = noteService;
     }
@@ -45,7 +48,7 @@ public class UserController {
     @ApiOperation(value = "Retrieve all the users", notes = "Retrieves all the users.")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully retrieved.")})
     @GetMapping
-    public CollectionModel<UserModel> findAllUsers(
+    public CollectionModel<UserRespModel> findAllUsers(
             @ApiParam(name = "page number", type = "integer", defaultValue = "0")
             @RequestParam(defaultValue = "0") int page,
             @ApiParam(name = "page size", type = "integer", defaultValue = "10")
@@ -55,7 +58,7 @@ public class UserController {
                       value = "Sorting property and order. The parameter can have multiple values.",
                       example = "firstName,desc")
             @RequestParam(defaultValue = "") List<String> sort) {
-        return userModelAssembler.toCollectionModel(userService.findAllUsers(page, size, sort))
+        return userRespModelAssembler.toCollectionModel(userService.findAllUsers(page, size, sort))
                 .add(linkTo(methodOn(this.getClass()).findAllUsers(page, size, sort))
                         .withSelfRel());
     }
@@ -68,10 +71,10 @@ public class UserController {
                     @ApiResponse(code = 201, message = "Successfully created."),
                     @ApiResponse(code = 400, message = "Validation error message of the property of User.")})
     @PostMapping
-    public ResponseEntity<Object> createUser(@RequestBody @Valid User user) {
-        userService.saveUser(user);
+    public ResponseEntity<Object> createUser(@RequestBody @Valid UserReqModel userReq) {
+        userService.saveUser(userAssembler.toModel(userReq));
         return ResponseEntity
-                .created(userModelAssembler.toModel(user)
+                .created(userRespModelAssembler.toModel(userAssembler.toModel(userReq))
                         .getLink("self")
                         .get().toUri())
                 .build();
@@ -85,11 +88,11 @@ public class UserController {
                     @ApiResponse(code = 200, message = "Successfully retrieved."),
                     @ApiResponse(code = 404, message = "User not found: id = ..")})
     @GetMapping(path = "/{userId}")
-    public ResponseEntity<UserModel> findUserById(
+    public ResponseEntity<UserRespModel> findUserById(
             @ApiParam(name = "user ID", type = "integer", value = "An integer representing user ID")
             @PathVariable Long userId) {
         return ResponseEntity
-                .ok(userModelAssembler.toModel(userService.findUserById(userId)));
+                .ok(userRespModelAssembler.toModel(userService.findUserById(userId)));
     }
 
     @ApiOperation(
@@ -100,13 +103,13 @@ public class UserController {
                     @ApiResponse(code = 200, message = "Successfully updated."),
                     @ApiResponse(code = 404, message = "User not found: id = ..")})
     @PutMapping(path = "/{userId}")
-    public ResponseEntity<UserModel> updateUser(
+    public ResponseEntity<UserRespModel> updateUser(
             @ApiParam(name = "user ID", type = "integer", value = "An integer representing user ID")
             @PathVariable Long userId,
-            @RequestBody @Valid User user) {
-        userService.updateUser(userId, user);
+            @RequestBody @Valid UserReqModel userReq) {
+        userService.updateUser(userId, userAssembler.toModel(userReq));
         return ResponseEntity
-                .ok(userModelAssembler.toModel(user));
+                .ok(userRespModelAssembler.toModel(userAssembler.toModel(userReq)));
     }
 
     @ApiOperation(
@@ -135,7 +138,7 @@ public class UserController {
                     @ApiResponse(code = 200, message = "Successfully retrieved."),
                     @ApiResponse(code = 404, message = "User not found: emailAddressOrPassword = .., password = ..")})
     @PostMapping(path = "/search", params = {"emailAddressOrUsername", "password"})
-    public ResponseEntity<UserModel> findUserByEmailOrUsernameAndPassword(
+    public ResponseEntity<UserRespModel> findUserByEmailOrUsernameAndPassword(
             @ApiParam(
                     name = "emailAddressOrUsername",
                     type = "string",
@@ -147,7 +150,7 @@ public class UserController {
                 emailAddressOrUsername,
                 password);
         return ResponseEntity
-                .ok(userModelAssembler.toModel(userFound));
+                .ok(userRespModelAssembler.toModel(userFound));
     }
 
     //notes
@@ -159,7 +162,7 @@ public class UserController {
                     @ApiResponse(code = 200, message = "Successfully retrieved."),
                     @ApiResponse(code = 404, message = "User not found: id = ..")})
     @GetMapping(path = "/{userId}/notes")
-    public ResponseEntity<CollectionModel<NoteModel>> findNotesByUserId(
+    public ResponseEntity<CollectionModel<NoteRespModel>> findNotesByUserId(
             @ApiParam(name = "user ID", type = "integer", value = "An integer representing user ID")
             @PathVariable Long userId,
             @ApiParam(name = "page number", type = "integer", defaultValue = "0")
@@ -174,7 +177,7 @@ public class UserController {
             @RequestParam(defaultValue = "") List<String> sort) {
         userService.requiresUserExistsById(userId);
         List<Note> notes =noteService.findAllNotesByUserId(userId, page, size, sort);
-        CollectionModel<NoteModel> collectionModel = noteModelAssembler.toCollectionModel(notes)
+        CollectionModel<NoteRespModel> collectionModel = noteRespModelAssembler.toCollectionModel(notes)
                 .add(linkTo(methodOn(this.getClass()).findNotesByUserId(userId, page, size, sort))
                         .withSelfRel());
         return ResponseEntity
@@ -196,7 +199,7 @@ public class UserController {
         note.setUser(userService.findUserById(userId));
         noteService.saveNote(note);
         return ResponseEntity
-                .created(noteModelAssembler.toModel(note)
+                .created(noteRespModelAssembler.toModel(note)
                         .getLink("self")
                         .get().toUri())
                 .build();

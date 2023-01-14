@@ -1,22 +1,22 @@
-package com.alihmzyv.notebookrestapi.entity.model;
+package com.alihmzyv.notebookrestapi.entity.model.resp;
 
 import com.alihmzyv.notebookrestapi.entity.Note;
 import org.springframework.hateoas.RepresentationModel;
 
-public class NoteModel extends RepresentationModel<NoteModel> {
+public class NoteRespModel extends RepresentationModel<NoteRespModel> {
     private String title;
     private String text;
 
-    public NoteModel(Note note) {
+    public NoteRespModel(Note note) {
         this.title = note.getTitle();
         this.text = note.getText();
     }
 
-    public NoteModel() {
+    public NoteRespModel() {
     }
 
-    public static NoteModel of(Note note) {
-        return new NoteModel(note);
+    public static NoteRespModel of(Note note) {
+        return new NoteRespModel(note);
     }
 
     public String getText() {

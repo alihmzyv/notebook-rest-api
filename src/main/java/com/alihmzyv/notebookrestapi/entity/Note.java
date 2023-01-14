@@ -1,10 +1,8 @@
 package com.alihmzyv.notebookrestapi.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModelProperty;
+import com.alihmzyv.notebookrestapi.entity.model.req.NoteReqModel;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Entity
@@ -13,31 +11,28 @@ public class Note {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    @JsonIgnore
     private Long id;
 
     @Column(name = "title")
-    @ApiModelProperty(
-            value = "Title of the note."
-    )
     private String title;
 
     @Column(name = "text")
-    @NotBlank(message = "Note cannot be null.")
-    @ApiModelProperty(
-            value = "Content of the note.",
-            required = true
-    )
     private String text;
 
     @ManyToOne(
             cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH},
             fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User user;
 
     public Note() {
+    }
+
+    public static Note of(NoteReqModel entity) {
+        Note note = new Note();
+        note.setText(entity.getText());
+        note.setTitle(entity.getTitle());
+        return note;
     }
 
     public Long getId() {

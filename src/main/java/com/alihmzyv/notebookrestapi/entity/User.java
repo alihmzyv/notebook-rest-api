@@ -1,12 +1,8 @@
 package com.alihmzyv.notebookrestapi.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModelProperty;
+import com.alihmzyv.notebookrestapi.entity.model.req.UserReqModel;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -17,59 +13,39 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    @JsonIgnore
     private Long id;
 
     @Column(name = "firstName")
-    @NotBlank(message = "First name is a required field.")
-    @ApiModelProperty(
-            value = "First name of the user.",
-            required = true
-    )
     private String firstName;
 
     @Column(name = "lastName")
-    @NotBlank(message = "Last name is a required field.")
-    @ApiModelProperty(
-            value = "Last name of the user.",
-            required = true
-    )
     private String lastName;
 
     @Column(name = "username")
-    @NotBlank(message = "Username is a required field.")
-    @ApiModelProperty(
-            value = "Username of the user. Should be unique.",
-            required = true
-    )
     private String username;
 
     @Column(name = "emailAddress")
-    @NotBlank(message = "Email Address is a required field.")
-    @Email(message = "Email address should be a well-formed email address.")
-    @ApiModelProperty(
-            value = "Email address of the user. Should be a unique, well-formed email address.",
-            example = "alihmzyv@gmail.com",
-            required = true
-    )
     private String emailAddress;
 
     @Column(name = "password")
-    @NotBlank(message = "Password is a required field.")
-    @Size(min = 6, message = "Password should contain at least 6 characters")
-    @ApiModelProperty(
-            value = "Password of the user. Should contain at least 6 characters.",
-            required = true
-    )
     private String password;
 
     @OneToMany(mappedBy = "user",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
-    @JsonIgnore
     private List<Note> notes;
 
     public User() {
+    }
+
+    public static User of(UserReqModel entity) {
+        User user = new User();
+        user.setFirstName(entity.getFirstName());
+        user.setLastName(entity.getLastName());
+        user.setEmailAddress(entity.getEmailAddress());
+        user.setUsername(entity.getUsername());
+        user.setPassword(entity.getPassword());
+        return user;
     }
 
     public Long getId() {
