@@ -38,7 +38,7 @@ public class NoteController {
             notes = "Retrieves all the notes.")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully retrieved.")})
     @GetMapping
-    public CollectionModel<NoteRespModel> findAllNotes(
+    public ResponseEntity<CollectionModel<NoteRespModel>> findAllNotes(
             @ApiParam(name = "page number", type = "integer", defaultValue = "0")
             @RequestParam(defaultValue = "0") int page,
             @ApiParam(name = "page size", type = "integer", defaultValue = "10")
@@ -49,9 +49,10 @@ public class NoteController {
                     value = "Sorting property and order. The parameter can have multiple values",
                     example = "text,desc")
             @RequestParam(defaultValue = "") List<String> sort) {
-        return noteRespModelAssembler.toCollectionModel(noteService.findAllNotes(page, size, sort))
-                .add(linkTo(methodOn(this.getClass()).findAllNotes(page, size, sort))
-                        .withSelfRel());
+        return ResponseEntity
+                .ok(noteRespModelAssembler
+                        .toCollectionModel(noteService.findAllNotes(page, size, sort))
+                        .add(linkTo(methodOn(this.getClass()).findAllNotes(page, size, sort)).withSelfRel()));
     }
 
     @ApiOperation(
@@ -82,7 +83,8 @@ public class NoteController {
             @PathVariable Long noteId,
             @RequestBody @Valid NoteReqModel noteReq) {
         return ResponseEntity
-                .ok(noteRespModelAssembler.toModel(noteService.updateNote(noteId, noteAssembler.toModel(noteReq))));
+                .ok(noteRespModelAssembler
+                        .toModel(noteService.updateNote(noteId, noteAssembler.toModel(noteReq))));
     }
 
     @ApiOperation(
@@ -97,8 +99,6 @@ public class NoteController {
             @ApiParam(name = "note ID", type = "integer", value = "An integer representing note ID")
             @PathVariable Long noteId) {
         noteService.deleteNoteById(noteId);
-        return ResponseEntity
-                .ok()
-                .build();
+        return ResponseEntity.ok().build();
     }
 }

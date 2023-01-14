@@ -48,7 +48,7 @@ public class UserController {
     @ApiOperation(value = "Retrieve all the users", notes = "Retrieves all the users.")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully retrieved.")})
     @GetMapping
-    public CollectionModel<UserRespModel> findAllUsers(
+    public ResponseEntity<CollectionModel<UserRespModel>> findAllUsers(
             @ApiParam(name = "page number", type = "integer", defaultValue = "0")
             @RequestParam(defaultValue = "0") int page,
             @ApiParam(name = "page size", type = "integer", defaultValue = "10")
@@ -58,9 +58,10 @@ public class UserController {
                       value = "Sorting property and order. The parameter can have multiple values.",
                       example = "firstName,desc")
             @RequestParam(defaultValue = "") List<String> sort) {
-        return userRespModelAssembler.toCollectionModel(userService.findAllUsers(page, size, sort))
-                .add(linkTo(methodOn(this.getClass()).findAllUsers(page, size, sort))
-                        .withSelfRel());
+        return ResponseEntity
+                .ok(userRespModelAssembler
+                        .toCollectionModel(userService.findAllUsers(page, size, sort))
+                        .add(linkTo(methodOn(this.getClass()).findAllUsers(page, size, sort)).withSelfRel()));
     }
 
     @ApiOperation
@@ -76,8 +77,8 @@ public class UserController {
         userService.saveUser(user);
         return ResponseEntity
                 .created(userRespModelAssembler.toModel(user)
-                        .getLink("self")
-                        .get().toUri())
+                        .getLink("self").get()
+                        .toUri())
                 .build();
     }
 
@@ -126,9 +127,7 @@ public class UserController {
             @ApiParam(name = "user ID", type = "integer", value = "An integer representing user ID")
             @PathVariable Long userId) {
         userService.deleteUserById(userId);
-        return ResponseEntity
-                .ok()
-                .build();
+        return ResponseEntity.ok().build();
     }
 
     @ApiOperation(
@@ -178,12 +177,11 @@ public class UserController {
                     example = "text,asc")
             @RequestParam(defaultValue = "") List<String> sort) {
         userService.requiresUserExistsById(userId);
-        List<Note> notes =noteService.findAllNotesByUserId(userId, page, size, sort);
-        CollectionModel<NoteRespModel> collectionModel = noteRespModelAssembler.toCollectionModel(notes)
-                .add(linkTo(methodOn(this.getClass()).findNotesByUserId(userId, page, size, sort))
-                        .withSelfRel());
-        return ResponseEntity
-                .ok(collectionModel);
+        List<Note> notes = noteService.findAllNotesByUserId(userId, page, size, sort);
+        CollectionModel<NoteRespModel> collectionModel = noteRespModelAssembler
+                .toCollectionModel(notes)
+                .add(linkTo(methodOn(this.getClass()).findNotesByUserId(userId, page, size, sort)).withSelfRel());
+        return ResponseEntity.ok(collectionModel);
     }
 
     @ApiOperation(

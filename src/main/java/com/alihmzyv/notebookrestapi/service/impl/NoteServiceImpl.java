@@ -39,17 +39,18 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public Note findNoteById(Long noteId) {
-        return noteRepo.findById(noteId)
+        return noteRepo
+                .findById(noteId)
                 .orElseThrow(() ->
                         new NoteNotFoundException(String.format("Note could not be found: id = %d", noteId)));
     }
 
     @Override
-    public void saveNote(Note note) {
+    public Note saveNote(Note note) {
         LocalDateTime now = LocalDateTime.now();
         note.setDateTimeCreated(now);
         note.setDateTimeLastModified(now);
-        noteRepo.save(note);
+        return noteRepo.save(note);
     }
 
     @Override
@@ -58,8 +59,7 @@ public class NoteServiceImpl implements NoteService {
         note.setId(noteId);
         note.setUser(noteFound.getUser());
         note.setDateTimeLastModified(LocalDateTime.now());
-        noteRepo.save(note);
-        return note;
+        return noteRepo.save(note);
     }
 
     @Override

@@ -8,7 +8,7 @@ public interface NoteService {
     List<Note> findAllNotes(int page, int size, List<String> sort);
     List<Note> findAllNotesByUserId(Long userId, int page, int size, List<String> sort);
     Note findNoteById(Long noteId);
-    void saveNote(Note note);
+    Note saveNote(Note note);
     Note updateNote(Long noteId, Note note);
     void deleteNoteById(Long noteId);
     void requiresNoteExistsById(Long noteId);

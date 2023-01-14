@@ -43,9 +43,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserById(Long userId) {
-        return userRepo.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(
-                        String.format("User could not be found: id = %d", userId)));
+        return userRepo
+                .findById(userId)
+                .orElseThrow(() ->
+                        new UserNotFoundException(String.format("User could not be found: id = %d", userId)));
     }
 
     @Override
@@ -61,18 +62,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(User user) {
+    public User saveUser(User user) {
         requiresUniqueUserDetails(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepo.save(user);
+        return userRepo.save(user);
     }
 
     @Override
-    public void updateUser(Long userId, User user) {
+    public User updateUser(Long userId, User user) {
         requiresUserExistsById(userId);
         user.setId(userId);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepo.save(user);
+        return saveUser(user);
     }
 
     @Override
