@@ -8,7 +8,6 @@ import com.alihmzyv.notebookrestapi.repo.NoteRepository;
 import com.alihmzyv.notebookrestapi.repo.UserRepository;
 import com.alihmzyv.notebookrestapi.service.SortingHelper;
 import com.alihmzyv.notebookrestapi.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,7 +24,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
 
-    @Autowired
     public UserServiceImpl(UserRepository userRepo,
                            NoteRepository noteRepo,
                            SortingHelper sortingHelper,

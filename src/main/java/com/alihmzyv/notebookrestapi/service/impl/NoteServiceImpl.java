@@ -5,7 +5,6 @@ import com.alihmzyv.notebookrestapi.exception.notfound.NoteNotFoundException;
 import com.alihmzyv.notebookrestapi.repo.NoteRepository;
 import com.alihmzyv.notebookrestapi.service.NoteService;
 import com.alihmzyv.notebookrestapi.service.SortingHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ public class NoteServiceImpl implements NoteService {
     private final NoteRepository noteRepo;
     private final SortingHelper sortingHelper;
 
-    @Autowired
+
     public NoteServiceImpl(NoteRepository noteRepo, SortingHelper sortingHelper) {
         this.noteRepo = noteRepo;
         this.sortingHelper = sortingHelper;
