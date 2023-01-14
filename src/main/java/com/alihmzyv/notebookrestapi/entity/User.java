@@ -35,9 +35,6 @@ public class User {
             fetch = FetchType.LAZY)
     private List<Note> notes;
 
-    public User() {
-    }
-
     public static User of(UserReqModel entity) {
         User user = new User();
         user.setFirstName(entity.getFirstName());
