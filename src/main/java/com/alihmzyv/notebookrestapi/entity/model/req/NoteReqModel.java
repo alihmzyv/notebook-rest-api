@@ -1,9 +1,15 @@
 package com.alihmzyv.notebookrestapi.entity.model.req;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class NoteReqModel {
 
     @ApiModelProperty(
@@ -17,23 +23,6 @@ public class NoteReqModel {
             required = true
     )
     private String text;
-
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
 
     @Override
     public String toString() {

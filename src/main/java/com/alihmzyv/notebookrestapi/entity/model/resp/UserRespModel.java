@@ -1,8 +1,14 @@
 package com.alihmzyv.notebookrestapi.entity.model.resp;
 
 import com.alihmzyv.notebookrestapi.entity.User;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class UserRespModel extends RepresentationModel<UserRespModel> {
     private String firstName;
     private String lastName;
@@ -16,42 +22,7 @@ public class UserRespModel extends RepresentationModel<UserRespModel> {
         this.username = user.getUsername();
     }
 
-    public UserRespModel() {
-    }
-
     public static UserRespModel of(User user) {
         return new UserRespModel(user);
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
     }
 }

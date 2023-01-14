@@ -1,6 +1,10 @@
 package com.alihmzyv.notebookrestapi.entity;
 
 import com.alihmzyv.notebookrestapi.entity.model.req.NoteReqModel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -8,6 +12,10 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "note")
+@Getter
+@Setter
+@RequiredArgsConstructor
+@ToString
 public class Note {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,54 +47,6 @@ public class Note {
         return note;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public LocalDateTime getDateTimeCreated() {
-        return dateTimeCreated;
-    }
-
-    public void setDateTimeCreated(LocalDateTime dateTimeCreated) {
-        this.dateTimeCreated = dateTimeCreated;
-    }
-
-    public LocalDateTime getDateTimeLastModified() {
-        return dateTimeLastModified;
-    }
-
-    public void setDateTimeLastModified(LocalDateTime dateTimeLastModified) {
-        this.dateTimeLastModified = dateTimeLastModified;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -98,13 +58,5 @@ public class Note {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Note{" +
-                "id=" + id +
-                ", text='" + text + '\'' +
-                '}';
     }
 }

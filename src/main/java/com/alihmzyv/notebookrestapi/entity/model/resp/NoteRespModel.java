@@ -1,10 +1,16 @@
 package com.alihmzyv.notebookrestapi.entity.model.resp;
 
 import com.alihmzyv.notebookrestapi.entity.Note;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class NoteRespModel extends RepresentationModel<NoteRespModel> {
     private String title;
     private String text;
@@ -18,42 +24,7 @@ public class NoteRespModel extends RepresentationModel<NoteRespModel> {
         this.dateTimeLastModified = note.getDateTimeLastModified();
     }
 
-    public NoteRespModel() {
-    }
-
     public static NoteRespModel of(Note note) {
         return new NoteRespModel(note);
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public LocalDateTime getDateTimeCreated() {
-        return dateTimeCreated;
-    }
-
-    public void setDateTimeCreated(LocalDateTime dateTimeCreated) {
-        this.dateTimeCreated = dateTimeCreated;
-    }
-
-    public LocalDateTime getDateTimeLastModified() {
-        return dateTimeLastModified;
-    }
-
-    public void setDateTimeLastModified(LocalDateTime dateTimeLastModified) {
-        this.dateTimeLastModified = dateTimeLastModified;
     }
 }
