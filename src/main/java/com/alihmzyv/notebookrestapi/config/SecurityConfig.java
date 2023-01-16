@@ -40,10 +40,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
             .authorizeRequests()
-            .antMatchers("/users/**", "/notes/**").hasAuthority("CLIENT")
-            .anyRequest().hasAuthority("ADMIN")
+            .antMatchers(
+                    "/",
+                    "/swagger-ui.html",
+                    "/swagger-ui.htm",
+                    "/users/**",
+                    "/notes/**").hasAnyRole("CLIENT", "ADMIN")
+            .anyRequest().hasRole("ADMIN")
             .and()
             .httpBasic()
+            .and()
+            .formLogin()
             .and()
             .logout()
             .permitAll();
