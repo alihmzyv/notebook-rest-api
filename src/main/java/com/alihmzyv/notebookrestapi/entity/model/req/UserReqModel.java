@@ -12,7 +12,6 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 public class UserReqModel {
     @NotBlank(message = "First name is a required field.")
     @ApiModelProperty(

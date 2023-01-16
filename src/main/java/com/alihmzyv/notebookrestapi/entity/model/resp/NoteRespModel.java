@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 public class NoteRespModel extends RepresentationModel<NoteRespModel> {
     private String title;
     private String text;

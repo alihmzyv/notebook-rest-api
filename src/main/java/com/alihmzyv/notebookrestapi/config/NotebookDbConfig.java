@@ -11,10 +11,10 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "com.alihmzyv.notebookrestapi.repo")
-public class NotebookDBConfig {
-    @Bean(name = "notebook-datasource")
+public class NotebookDbConfig {
+    @Bean(name = "notebookDatasource")
     @Primary
-    @ConfigurationProperties(prefix = "app.notebook-datasource")
+    @ConfigurationProperties(prefix = "app.notebook.datasource")
     public DataSource notebookDataSource(){
         return DataSourceBuilder.create().build();
     }

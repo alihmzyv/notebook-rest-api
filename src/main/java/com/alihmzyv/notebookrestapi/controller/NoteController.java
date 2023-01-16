@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,16 +22,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(path = "/notes")
+@RequiredArgsConstructor
 public class NoteController {
     private final NoteService noteService;
     private final NoteRespModelAssembler noteRespModelAssembler;
     private final NoteAssembler noteAssembler;
-
-    public NoteController(NoteService noteService, NoteRespModelAssembler noteRespModelAssembler, NoteAssembler noteAssembler) {
-        this.noteService = noteService;
-        this.noteRespModelAssembler = noteRespModelAssembler;
-        this.noteAssembler = noteAssembler;
-    }
 
 
     @ApiOperation(

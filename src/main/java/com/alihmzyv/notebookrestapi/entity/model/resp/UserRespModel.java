@@ -8,7 +8,6 @@ import org.springframework.hateoas.RepresentationModel;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 public class UserRespModel extends RepresentationModel<UserRespModel> {
     private String firstName;
     private String lastName;

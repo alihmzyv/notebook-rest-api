@@ -6,10 +6,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserAssembler {
-
-    public UserAssembler() {
-    }
-
     public User toModel(UserReqModel entity) {
         return User.of(entity);
     }

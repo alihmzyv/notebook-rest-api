@@ -14,7 +14,6 @@ import java.util.Objects;
 @Table(name = "note")
 @Getter
 @Setter
-@RequiredArgsConstructor
 @ToString
 public class Note {
     @Id

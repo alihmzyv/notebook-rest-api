@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 
 @Configuration
-public class APIDBConfig {
-    @Bean(name = "api-datasource")
-    @ConfigurationProperties(prefix = "app.api-datasource")
+public class SecurityDbConfig {
+    @Bean(name = "securityDatasource")
+    @ConfigurationProperties(prefix = "app.security.datasource")
     public DataSource apiDataSource(){
         return DataSourceBuilder.create().build();
     }

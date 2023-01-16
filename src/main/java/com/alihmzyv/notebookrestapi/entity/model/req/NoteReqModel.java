@@ -9,7 +9,6 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 public class NoteReqModel {
 
     @ApiModelProperty(

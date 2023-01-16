@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,24 +27,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(path = "/users")
+@RequiredArgsConstructor
 public class UserController {
     private final UserRespModelAssembler userRespModelAssembler;
     private final UserAssembler userAssembler;
     private final NoteRespModelAssembler noteRespModelAssembler;
     private final UserService userService;
     private final NoteService noteService;
-
-    public UserController(UserRespModelAssembler userRespModelAssembler,
-                          UserAssembler userAssembler,
-                          NoteRespModelAssembler noteRespModelAssembler,
-                          UserService userService,
-                          NoteService noteService) {
-        this.userRespModelAssembler = userRespModelAssembler;
-        this.userAssembler = userAssembler;
-        this.noteRespModelAssembler = noteRespModelAssembler;
-        this.userService = userService;
-        this.noteService = noteService;
-    }
 
     @ApiOperation(value = "Retrieve all the users", notes = "Retrieves all the users.")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully retrieved.")})
